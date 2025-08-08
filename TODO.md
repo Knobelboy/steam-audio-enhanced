@@ -29,7 +29,8 @@ Legend: [x] done, [ ] pending, [>] in progress, [~] blocked
 - [ ] Expose configurable constants (e.g., coincidence boost width/amount) with reasonable defaults
 
 ### 3) Integration into direct path
-- [ ] Feature toggle
+- [>] Feature toggle
+  - [x] Add enum toggle in `DirectEffect` (`TransmissionMode`) with default Legacy
   - [ ] New runtime flag: “Physically Based Transmission” (project-level; Unity UI)
   - [ ] Mode A legacy (default), Mode B physically based
 - [ ] Direct simulator changes
