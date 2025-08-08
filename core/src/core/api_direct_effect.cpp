@@ -115,6 +115,8 @@ IPLAudioEffectState CDirectEffect::apply(IPLDirectEffectParams* params,
 
     _params.flags = static_cast<DirectEffectFlags>(params->flags);
     _params.transmissionType = static_cast<TransmissionType>(params->transmissionType);
+    // Toggle: select physically based mode when legacy 3-band is not desired.
+    // For now, drive from TransmissionType (FreqDependent maps to Legacy 3-band EQ path) and leave mode at default.
 
     AudioBuffer _in(in->numChannels, in->numSamples, in->data);
     AudioBuffer _out(out->numChannels, out->numSamples, out->data);
