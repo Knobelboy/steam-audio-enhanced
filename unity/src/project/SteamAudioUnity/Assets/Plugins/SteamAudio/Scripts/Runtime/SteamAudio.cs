@@ -417,6 +417,17 @@ namespace SteamAudio
     }
 
     [StructLayout(LayoutKind.Sequential)]
+    public struct MaterialEx
+    {
+        public float thickness;          // [m]
+        public float density;            // [kg/m^3]
+        public float youngsModulus;      // [Pa]
+        public float poissonRatio;       // [-]
+        public float lossFactor;         // [-]
+        public float criticalFrequency;  // [Hz] (<=0 to auto-compute)
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
     public struct InstancedMeshSettings
     {
         public IntPtr subScene;
@@ -959,6 +970,27 @@ namespace SteamAudio
         [DllImport("phonon")]
 #endif
         public static extern void iplStaticMeshRemove(IntPtr staticMesh, IntPtr scene);
+
+#if (UNITY_IOS || UNITY_WEBGL) && !UNITY_EDITOR
+        [DllImport("__Internal")]
+#else
+        [DllImport("phonon")]
+#endif
+        public static extern void iplStaticMeshSetMaterialEx(IntPtr staticMesh, int materialIndex, ref MaterialEx materialEx);
+
+#if (UNITY_IOS || UNITY_WEBGL) && !UNITY_EDITOR
+        [DllImport("__Internal")]
+#else
+        [DllImport("phonon")]
+#endif
+        public static extern int iplStaticMeshGetMaterialEx(IntPtr staticMesh, int materialIndex, out MaterialEx materialExOut);
+
+#if (UNITY_IOS || UNITY_WEBGL) && !UNITY_EDITOR
+        [DllImport("__Internal")]
+#else
+        [DllImport("phonon")]
+#endif
+        public static extern void iplStaticMeshClearMaterialEx(IntPtr staticMesh, int materialIndex);
 
 #if (UNITY_IOS || UNITY_WEBGL) && !UNITY_EDITOR
         [DllImport("__Internal")]
