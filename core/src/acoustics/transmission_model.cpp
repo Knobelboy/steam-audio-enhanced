@@ -79,7 +79,7 @@ double RadiationEfficiencyFinitePlate(double /*thetaRad*/, double /*freqHz*/, co
 
 double TransmissionTau(double thetaRad, double freqHz, const MaterialEx& m)
 {
-    // If physical params are not set, fall back to mid-band legacy average.
+    // If physical params are not set, fall back to legacy bands.
     const bool hasPhysical = (m.thickness_m > 0.0 && m.density_kgpm3 > 0.0 && m.youngsModulus_Pa > 0.0);
     if (!hasPhysical)
     {
