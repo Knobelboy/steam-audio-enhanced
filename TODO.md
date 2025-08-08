@@ -22,10 +22,10 @@ Legend: [x] done, [ ] pending, [>] in progress, [~] blocked
 
 ### 2) Transmission math module
 - [x] Create `TransmissionTau`, `RadiationEfficiencyFinitePlate`, helpers
-- [ ] Unit tests (C++)
+- [>] Unit tests (C++)
+  - [x] Angle dependence sanity (grazing vs. normal incidence)
+  - [x] Edge cases (missing params → legacy bands; numeric stability)
   - [ ] Sanity trends vs. digitized curves (below/near/above critical frequency)
-  - [ ] Angle dependence sanity (grazing vs. normal incidence)
-  - [ ] Edge cases (missing params → legacy bands; numeric stability)
 - [ ] Expose configurable constants (e.g., coincidence boost width/amount) with reasonable defaults
 
 ### 3) Integration into direct path
