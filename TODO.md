@@ -35,7 +35,9 @@ Legend: [x] done, [ ] pending, [>] in progress, [~] blocked
   - [ ] Mode A legacy (default), Mode B physically based
 - [ ] Direct simulator changes
   - [x] In `DirectSimulator::transmission`: compute θ from `hit.normal` and ray, look up `MaterialEx`
-  - [ ] Fast path B1: map τ(θ,f) → fixed N bands (8–16)
+  - [>] Fast path B1: map τ(θ,f) → fixed N bands (8–16)
+    - [x] Temporary 3-band mapping using Steam Audio centers (200Hz, 2kHz, 16kHz)
+    - [ ] Generalize to N-band framework (bands.h/N)
   - [ ] Cache τ over (angle bins × frequency bands) per material
 - [ ] Direct effect changes
   - [ ] If Mode B1: feed N-band gains into existing EQ or new multi-band wrapper
