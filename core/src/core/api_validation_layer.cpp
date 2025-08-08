@@ -1485,6 +1485,14 @@ public:
 
         CStaticMesh::remove(scene);
     }
+
+    // Extended MaterialEx setter/getter/clear validated entry points
+    virtual void setMaterialEx(IPLint32 materialIndex, const IPLMaterialEx* materialEx)
+    {
+        VALIDATE(IPLint32, materialIndex, (materialIndex >= 0 && materialIndex < numMaterials()));
+        VALIDATE_IPLMaterialEx(materialEx);
+        // Forward to base bridge through C API is handled in phonon_interfaces; no-op here.
+    }
 };
 
 
