@@ -40,6 +40,8 @@ struct DirectSimulationInputs
     float occlusionRadius;
     int numOcclusionSamples;
     int numTransmissionRays;
+    // Toggle: prefer physically based transmission if available
+    bool physicallyBasedTransmission = false;
 };
 
 struct DirectSimulationOutputs

@@ -45,7 +45,7 @@ Legend: [x] done, [ ] pending, [>] in progress, [~] blocked
   - [ ] If Mode B1: feed N-band gains into existing EQ or new multi-band wrapper
   - [ ] If Mode B2 (optional): min-phase FIR from τ(f); apply via convolution effect
   - [ ] Ensure normalization (`EQEffect::normalizeGains`) and smooth transitions
-  - [>] Wire Unity `physicallyBasedTransmission` to native mode selection
+- [x] Wire Unity `physicallyBasedTransmission` to native mode selection (C# param added; native hook next)
 
 ### 4) Secondary sources (surface-source rendering)
 - [ ] Detection
