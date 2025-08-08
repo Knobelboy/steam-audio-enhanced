@@ -181,6 +181,9 @@ namespace SteamAudio
         FrequencyDependent
     }
 
+    // Note: Native has an internal TransmissionMode (Legacy3Band, PhysicallyBased).
+    // We drive mode selection indirectly via project setting and material presence; no C# enum needed now.
+
     public enum ReflectionEffectType
     {
         Convolution,
