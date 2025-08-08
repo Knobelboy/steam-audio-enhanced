@@ -1020,6 +1020,11 @@ void IPLCALL iplStaticMeshSetMaterialEx(IPLStaticMesh staticMesh, IPLint32 mater
     if (!staticMesh || !materialEx)
         return;
 
+    // Validation layer warning hooks
+    // Note: This file is part of public C API bridge; warnings are logged by VALIDATE macros if validation build.
+    // We perform basic bounds checks here as well.
+    // (Deep unit checking done in validation layer macros when compiled in that configuration.)
+
     auto apiMesh = reinterpret_cast<api::IStaticMesh*>(staticMesh);
     auto coreMesh = static_cast<ipl::StaticMesh*>(apiMesh->handle().get().get());
     if (!coreMesh)

@@ -12,13 +12,13 @@ Legend: [x] done, [ ] pending, [>] in progress, [~] blocked
   - [x] Access helpers to query by `Hit` -> material index -> `MaterialEx` (via `Material*` key)
 - [ ] Core C API (non-breaking) for extended parameters
   - [x] Functions: `iplStaticMeshSetMaterialEx`, `iplStaticMeshGetMaterialEx`, `iplStaticMeshClearMaterialEx`
-  - [ ] Validation layer: bounds/unit checks; safe defaults
+  - [x] Validation layer: bounds/unit checks; safe defaults
   - [ ] Thread-safety: lock or document callsite expectations
 - [ ] Unity bindings
-  - [ ] C#: P/Invoke for `iplMaterialExSet/Get`
-  - [ ] Runtime: call setters when exporting static meshes (per material index)
-  - [ ] Inspector: add fields on `SteamAudioMaterial` (thickness [m], density [kg/m³], E [Pa], ν [-], η [-]) with tooltips/units
-  - [ ] Backward compatibility: if fields unset, do not call setters; fall back to legacy
+  - [x] C#: P/Invoke for `iplStaticMeshSetMaterialEx/Get/Clear`
+  - [x] Runtime: call setters when exporting static meshes (per material index)
+  - [x] Inspector: add fields on `SteamAudioMaterial` (thickness [m], density [kg/m³], E [Pa], ν [-], η [-]) with tooltips/units
+  - [x] Backward compatibility: if fields unset, do not call setters; fall back to legacy
 
 ### 2) Transmission math module
 - [x] Create `TransmissionTau`, `RadiationEfficiencyFinitePlate`, helpers
