@@ -39,6 +39,22 @@ namespace SteamAudio
         [Range(0.0f, 1.0f)]
         public float highFreqTransmission = 0.1f;
 
+        [Header("Physically Based Transmission (optional)")]
+        [Tooltip("Plate thickness in meters. Leave 0 to use legacy 3-band transmission.")]
+        public float thickness = 0.0f; // [m]
+        [Tooltip("Material density in kg/m^3.")]
+        public float density = 0.0f;   // [kg/m^3]
+        [Tooltip("Young's modulus in Pascals (Pa).")]
+        public float youngsModulus = 0.0f; // [Pa]
+        [Tooltip("Poisson's ratio [-], typically ~0.3 for many solids.")]
+        [Range(-0.49f, 0.49f)]
+        public float poissonRatio = 0.3f;  // [-]
+        [Tooltip("Structural loss factor [-] between 0 and 1.")]
+        [Range(0.0f, 1.0f)]
+        public float lossFactor = 0.02f;   // [-]
+        [Tooltip("Critical frequency in Hz. Set <= 0 to auto-compute.")]
+        public float criticalFrequency = 0.0f; // [Hz]
+
         public Material GetMaterial()
         {
             var material = new Material { };
@@ -50,6 +66,22 @@ namespace SteamAudio
             material.transmissionMid = midFreqTransmission;
             material.transmissionHigh = highFreqTransmission;
             return material;
+        }
+
+        public bool TryGetMaterialEx(out MaterialEx ex)
+        {
+            ex = new MaterialEx();
+            if (thickness <= 0.0f || density <= 0.0f || youngsModulus <= 0.0f)
+            {
+                return false; // not set; use legacy
+            }
+            ex.thickness = thickness;
+            ex.density = density;
+            ex.youngsModulus = youngsModulus;
+            ex.poissonRatio = poissonRatio;
+            ex.lossFactor = lossFactor;
+            ex.criticalFrequency = criticalFrequency;
+            return true;
         }
     }
 }

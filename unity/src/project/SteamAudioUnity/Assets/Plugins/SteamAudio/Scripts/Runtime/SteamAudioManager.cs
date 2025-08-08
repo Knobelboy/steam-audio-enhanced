@@ -1606,6 +1606,19 @@ namespace SteamAudio
             var scene = new Scene(context, SceneType.Default, null, null, null, null);
 
             var staticMesh = new StaticMesh(context, scene, vertices, triangles, materialIndices, materials);
+            // Optional: push extended material parameters using default material settings if provided.
+            var settings = SteamAudioSettings.Singleton;
+            if (settings != null && settings.defaultMaterial != null)
+            {
+                MaterialEx ex;
+                if (settings.defaultMaterial.TryGetMaterialEx(out ex))
+                {
+                    for (var i = 0; i < materials.Length; ++i)
+                    {
+                        API.iplStaticMeshSetMaterialEx(staticMesh.Get(), i, ref ex);
+                    }
+                }
+            }
             staticMesh.AddToScene(scene);
 
             if (exportOBJ)
