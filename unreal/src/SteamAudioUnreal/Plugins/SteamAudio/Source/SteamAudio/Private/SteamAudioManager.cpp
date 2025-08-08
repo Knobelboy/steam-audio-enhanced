@@ -93,6 +93,11 @@ FSteamAudioManager::~FSteamAudioManager()
     ShutDownSteamAudio();
 }
 
+void FSteamAudioManager::SetSteamAudioEnabled(bool bNewIsSteamAudioEnabled)
+{
+    bIsSteamAudioEnabled = bNewIsSteamAudioEnabled;
+}
+
 IPLCoordinateSpace3 FSteamAudioManager::GetListenerCoordinates()
 {
     IPLCoordinateSpace3 ListenerCoordinates{};
@@ -213,7 +218,7 @@ bool FSteamAudioManager::InitializeSteamAudio(EManagerInitReason Reason)
     bool bShouldInitEmbree = (Reason == EManagerInitReason::BAKING || Reason == EManagerInitReason::PLAYING) && (ConfiguredSceneType == IPL_SCENETYPE_EMBREE);
     bool bShouldInitRadeonRays = (Reason == EManagerInitReason::BAKING || Reason == EManagerInitReason::PLAYING) && (ConfiguredSceneType == IPL_SCENETYPE_RADEONRAYS);
     bool bShouldInitTrueAudioNext = (Reason == EManagerInitReason::PLAYING) && (ConfiguredReflectionEffectType == IPL_REFLECTIONEFFECTTYPE_TAN);
-    bool bShouldInitOpenCL = (bShouldInitRadeonRays || bShouldInitTrueAudioNext);
+    bShouldInitOpenCL = (bShouldInitRadeonRays || bShouldInitTrueAudioNext);
 
     if (bShouldInitEmbree)
     {
@@ -239,7 +244,7 @@ bool FSteamAudioManager::InitializeSteamAudio(EManagerInitReason Reason)
 
         IPLOpenCLDeviceList OpenCLDeviceList = nullptr;
         IPLerror Status = iplOpenCLDeviceListCreate(Context, &OpenCLDeviceSettings, &OpenCLDeviceList);
-        if (Status != IPL_STATUS_SUCCESS)
+        if (Status == IPL_STATUS_SUCCESS)
         {
             int NumDevices = iplOpenCLDeviceListGetNumDevices(OpenCLDeviceList);
 
@@ -705,7 +710,8 @@ void FSteamAudioManager::Tick(float DeltaTime)
 
         ThreadPoolIdle = false;
 
-        AsyncPool(*ThreadPool, [this]
+        if (!bShouldInitOpenCL || (bShouldInitOpenCL && OpenCLDevice))
+        AsyncPool(*ThreadPool, [this] // May cause a crash when OpenCL device is not initialized
         {
             iplSimulatorRunReflections(Simulator);
             iplSimulatorRunPathing(Simulator);
