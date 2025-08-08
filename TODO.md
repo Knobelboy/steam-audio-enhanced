@@ -34,7 +34,7 @@ Legend: [x] done, [ ] pending, [>] in progress, [~] blocked
   - [ ] New runtime flag: “Physically Based Transmission” (project-level; Unity UI)
   - [ ] Mode A legacy (default), Mode B physically based
 - [ ] Direct simulator changes
-  - [ ] In `DirectSimulator::transmission`: compute θ from `hit.normal` and ray, look up `MaterialEx`
+  - [x] In `DirectSimulator::transmission`: compute θ from `hit.normal` and ray, look up `MaterialEx`
   - [ ] Fast path B1: map τ(θ,f) → fixed N bands (8–16)
   - [ ] Cache τ over (angle bins × frequency bands) per material
 - [ ] Direct effect changes

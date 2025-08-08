@@ -15,6 +15,8 @@
 //
 
 #include "direct_simulator.h"
+#include "material_ex_registry.h"
+#include "../acoustics/transmission_model.h"
 
 namespace ipl {
 
@@ -227,10 +229,31 @@ void DirectSimulator::transmission(const IScene& scene,
         numHits++;
 
         // Accumulate the product of the transmission coefficients of all materials
-        // encountered so far.
+        // encountered so far. Default to legacy 3-band; optionally override using
+        // physically based tau(theta,f) mapped to 3 bands when MaterialEx is provided.
+        float hitTransmission[Bands::kNumBands] = { hit.material->transmission[0], hit.material->transmission[1], hit.material->transmission[2] };
+
+        if (hit.material)
+        {
+            const MaterialEx* ex = GetMaterialEx(hit.material);
+            if (ex)
+            {
+                const auto rayDir = rays[currentRayIndex].direction;
+                const auto n = hit.normal;
+                const double cosAngle = std::fabs(Vector3f::dot(-rayDir, n));
+                const double theta = AngleFromRayAndNormal(static_cast<double>(cosAngle));
+                const double fCenters[3] = { 200.0, 2000.0, 16000.0 };
+                for (int j = 0; j < Bands::kNumBands; ++j)
+                {
+                    const double tau = TransmissionTau(theta, fCenters[j], *ex);
+                    hitTransmission[j] = static_cast<float>(std::max(0.0, std::min(1.0, tau)));
+                }
+            }
+        }
+
         for (auto j = 0; j < Bands::kNumBands; ++j)
         {
-            accumulatedTransmission[j] *= hit.material->transmission[j];
+            accumulatedTransmission[j] *= hitTransmission[j];
         }
 
         // Calculate the origin of the next ray segment we'll trace, if any.
