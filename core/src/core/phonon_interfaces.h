@@ -1015,6 +1015,76 @@ void IPLCALL iplStaticMeshRemove(IPLStaticMesh staticMesh, IPLScene scene)
     reinterpret_cast<api::IStaticMesh*>(staticMesh)->remove(reinterpret_cast<api::IScene*>(scene));
 }
 
+void IPLCALL iplStaticMeshSetMaterialEx(IPLStaticMesh staticMesh, IPLint32 materialIndex, const IPLMaterialEx* materialEx)
+{
+    if (!staticMesh || !materialEx)
+        return;
+
+    auto apiMesh = reinterpret_cast<api::IStaticMesh*>(staticMesh);
+    auto coreMesh = static_cast<ipl::StaticMesh*>(apiMesh->handle().get().get());
+    if (!coreMesh)
+        return;
+
+    if (materialIndex < 0 || materialIndex >= coreMesh->numMaterials())
+        return;
+
+    const ipl::Material* matPtr = &coreMesh->materials()[materialIndex];
+
+    ipl::MaterialEx ex{};
+    ex.thickness_m = materialEx->thickness;
+    ex.density_kgpm3 = materialEx->density;
+    ex.youngsModulus_Pa = materialEx->youngsModulus;
+    ex.poissonRatio = materialEx->poissonRatio;
+    ex.lossFactor = materialEx->lossFactor;
+    ex.criticalFreq_Hz = materialEx->criticalFrequency;
+
+    ipl::SetMaterialEx(matPtr, ex);
+}
+
+IPLint32 IPLCALL iplStaticMeshGetMaterialEx(IPLStaticMesh staticMesh, IPLint32 materialIndex, IPLMaterialEx* materialExOut)
+{
+    if (!staticMesh || !materialExOut)
+        return 0;
+
+    auto apiMesh = reinterpret_cast<api::IStaticMesh*>(staticMesh);
+    auto coreMesh = static_cast<ipl::StaticMesh*>(apiMesh->handle().get().get());
+    if (!coreMesh)
+        return 0;
+
+    if (materialIndex < 0 || materialIndex >= coreMesh->numMaterials())
+        return 0;
+
+    const ipl::Material* matPtr = &coreMesh->materials()[materialIndex];
+    auto ex = ipl::GetMaterialEx(matPtr);
+    if (!ex)
+        return 0;
+
+    materialExOut->thickness = static_cast<IPLfloat32>(ex->thickness_m);
+    materialExOut->density = static_cast<IPLfloat32>(ex->density_kgpm3);
+    materialExOut->youngsModulus = static_cast<IPLfloat32>(ex->youngsModulus_Pa);
+    materialExOut->poissonRatio = static_cast<IPLfloat32>(ex->poissonRatio);
+    materialExOut->lossFactor = static_cast<IPLfloat32>(ex->lossFactor);
+    materialExOut->criticalFrequency = static_cast<IPLfloat32>(ex->criticalFreq_Hz);
+    return 1;
+}
+
+void IPLCALL iplStaticMeshClearMaterialEx(IPLStaticMesh staticMesh, IPLint32 materialIndex)
+{
+    if (!staticMesh)
+        return;
+
+    auto apiMesh = reinterpret_cast<api::IStaticMesh*>(staticMesh);
+    auto coreMesh = static_cast<ipl::StaticMesh*>(apiMesh->handle().get().get());
+    if (!coreMesh)
+        return;
+
+    if (materialIndex < 0 || materialIndex >= coreMesh->numMaterials())
+        return;
+
+    const ipl::Material* matPtr = &coreMesh->materials()[materialIndex];
+    ipl::MaterialExRegistry::instance().removeFor(matPtr);
+}
+
 IPLerror IPLCALL iplInstancedMeshCreate(IPLScene scene,
                                 IPLInstancedMeshSettings* settings,
                                 IPLInstancedMesh* instancedMesh)

@@ -267,6 +267,10 @@ add_library(core OBJECT
     ambisonics_decode_effect.h
     ambisonics_decode_effect.cpp
 
+    # Physically-based transmission model (new acoustics module)
+    ../acoustics/transmission_model.h
+    ../acoustics/transmission_model.cpp
+
     triangle.h
     triangle.fbs
     mesh.h
@@ -284,6 +288,8 @@ add_library(core OBJECT
     static_mesh.h
     static_mesh.cpp
     static_mesh.fbs
+    material_ex_registry.h
+    material_ex_registry.cpp
     instanced_mesh.h
     instanced_mesh.cpp
     scene.h
