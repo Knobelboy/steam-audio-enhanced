@@ -7,6 +7,7 @@
 
 #include <unordered_map>
 #include <mutex>
+#include <array>
 
 #include "material.h"
 #include "../acoustics/transmission_model.h"
@@ -27,6 +28,13 @@ public:
     // Remove many entries at once (used when a static mesh is destroyed).
     void removeFor(const Material* const* materialPtrs, int count);
 
+    // Returns 3-band tau for a quantized angle bin, computing and caching if needed.
+    // outTau must point to an array of size 3.
+    void getTauBands(const Material* materialPtr,
+                     double thetaRad,
+                     const MaterialEx& materialEx,
+                     float outTau[3]);
+
 private:
     MaterialExRegistry() = default;
     MaterialExRegistry(const MaterialExRegistry&) = delete;
@@ -37,6 +45,15 @@ private:
 
     mutable std::mutex mMutex;
     std::unordered_map<const Material*, MaterialEx, PtrHash, PtrEq> mMap;
+
+    // Simple angle-binned cache of tau values for three legacy bands per material.
+    static constexpr int kAngleBins = 12;
+    struct TauCache3
+    {
+        bool initialized[kAngleBins] = {false};
+        float values[kAngleBins][3] = {{1.0f, 1.0f, 1.0f}};
+    };
+    std::unordered_map<const Material*, TauCache3, PtrHash, PtrEq> mTauCache;
 };
 
 // Convenience free functions

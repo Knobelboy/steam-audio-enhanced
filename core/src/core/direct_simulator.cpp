@@ -242,12 +242,8 @@ void DirectSimulator::transmission(const IScene& scene,
                 const auto n = hit.normal;
                 const double cosAngle = std::fabs(Vector3f::dot(-rayDir, n));
                 const double theta = AngleFromRayAndNormal(static_cast<double>(cosAngle));
-                const double fCenters[3] = { 200.0, 2000.0, 16000.0 };
-                for (int j = 0; j < Bands::kNumBands; ++j)
-                {
-                    const double tau = TransmissionTau(theta, fCenters[j], *ex);
-                    hitTransmission[j] = static_cast<float>(std::max(0.0, std::min(1.0, tau)));
-                }
+                // Use simple angle-binned cache for 3-band τ values
+                MaterialExRegistry::instance().getTauBands(hit.material, theta, *ex, hitTransmission);
             }
         }
 
