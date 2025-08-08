@@ -615,6 +615,8 @@ namespace SteamAudio
     {
         public DirectEffectFlags flags;
         public TransmissionType transmissionType;
+        // If true, prefer physically based transmission when MaterialEx is present.
+        public Bool physicallyBasedTransmission;
         public float distanceAttenuation;
         public float airAbsorptionLow;
         public float airAbsorptionMid;
