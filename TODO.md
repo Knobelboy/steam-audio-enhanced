@@ -31,7 +31,9 @@ Legend: [x] done, [ ] pending, [>] in progress, [~] blocked
 ### 3) Integration into direct path
 - [>] Feature toggle
   - [x] Add enum toggle in `DirectEffect` (`TransmissionMode`) with default Legacy
-  - [ ] New runtime flag: “Physically Based Transmission” (project-level; Unity UI)
+  - [>] New runtime flag: “Physically Based Transmission” (project-level; Unity UI)
+    - [x] Add toggle in `SteamAudioSettings.physicallyBasedTransmission`
+    - [ ] Hook into native to select Mode B at runtime
   - [ ] Mode A legacy (default), Mode B physically based
 - [ ] Direct simulator changes
   - [x] In `DirectSimulator::transmission`: compute θ from `hit.normal` and ray, look up `MaterialEx`

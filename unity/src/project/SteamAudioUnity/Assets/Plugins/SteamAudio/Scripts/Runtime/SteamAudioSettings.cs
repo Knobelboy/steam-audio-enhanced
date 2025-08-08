@@ -47,6 +47,10 @@ namespace SteamAudio
         [Header("Material Settings")]
         public SteamAudioMaterial defaultMaterial = null;
 
+        [Header("Transmission Settings")]
+        [Tooltip("When enabled, uses physically based, angle- and frequency-dependent transmission where MaterialEx is provided; otherwise falls back to legacy 3-band.")]
+        public bool physicallyBasedTransmission = false;
+
         [Header("Ray Tracer Settings")]
         public SceneType sceneType = SceneType.Default;
         public LayerMask layerMask = new LayerMask();
