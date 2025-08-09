@@ -55,7 +55,6 @@ struct DirectSoundPath
     float occlusion;
     float transmission[Bands::kNumBands];
     float directivity;
-    // Placeholder for future N-band or physically based transmission cache/index
 };
 
 // Encapsulates the state required to simulate direct sound, including distance attenuation, air absorption,

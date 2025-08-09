@@ -1115,31 +1115,6 @@ IPLAPI void IPLCALL iplStaticMeshAdd(IPLStaticMesh staticMesh, IPLScene scene);
 */
 IPLAPI void IPLCALL iplStaticMeshRemove(IPLStaticMesh staticMesh, IPLScene scene);
 
-/** Extended material parameters (optional, non-serialized). */
-typedef struct IPLMaterialEx_ {
-    /** Thickness [m] */
-    IPLfloat32 thickness;
-    /** Density [kg/m^3] */
-    IPLfloat32 density;
-    /** Young's modulus [Pa] */
-    IPLfloat32 youngsModulus;
-    /** Poisson's ratio [-] */
-    IPLfloat32 poissonRatio;
-    /** Loss factor [-] */
-    IPLfloat32 lossFactor;
-    /** Critical frequency [Hz]; set <= 0 to auto-compute */
-    IPLfloat32 criticalFrequency;
-} IPLMaterialEx;
-
-/** Sets extended material parameters for a material index on a static mesh. */
-IPLAPI void IPLCALL iplStaticMeshSetMaterialEx(IPLStaticMesh staticMesh, IPLint32 materialIndex, const IPLMaterialEx* materialEx);
-
-/** Gets extended material parameters for a material index on a static mesh. Returns 0 if not set. */
-IPLAPI IPLint32 IPLCALL iplStaticMeshGetMaterialEx(IPLStaticMesh staticMesh, IPLint32 materialIndex, IPLMaterialEx* materialExOut);
-
-/** Clears extended material parameters for a material index on a static mesh. */
-IPLAPI void IPLCALL iplStaticMeshClearMaterialEx(IPLStaticMesh staticMesh, IPLint32 materialIndex);
-
 /** Creates an instanced mesh.
 
     An instanced mesh takes one scene and positions it within another scene. This is useful if you have the

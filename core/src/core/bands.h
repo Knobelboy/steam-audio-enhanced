@@ -26,7 +26,7 @@ namespace ipl {
 
 namespace Bands
 {
-    const int kNumBands = 3; // Legacy fixed 3 bands; future: extendable for physically-based mode
+    const int kNumBands = 3;
 
     extern const float kLowCutoffFrequencies[kNumBands];
     extern const float kHighCutoffFrequencies[kNumBands];

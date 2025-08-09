@@ -811,27 +811,6 @@ std::string to_string(T* value)
     } \
 }
 
-// Extended material parameters validation (MaterialEx)
-#define VALIDATE_IPLMaterialEx(value) { \
-    VALIDATE_POINTER(value); \
-    if (value) { \
-        // Thickness in meters (> 0 for physically based mode; allow 0 to indicate fallback)
-        VALIDATE(IPLfloat32, value->thickness, (value->thickness >= 0.0f)); \
-        // Density in kg/m^3 (> 0 if thickness > 0)
-        if (value->thickness > 0.0f) { \
-            VALIDATE(IPLfloat32, value->density, (value->density > 0.0f && value->density < 50000.0f)); \
-            // Young's modulus in Pa (> 0)
-            VALIDATE(IPLfloat32, value->youngsModulus, (value->youngsModulus > 0.0f)); \
-            // Poisson's ratio in [0, 0.5]
-            VALIDATE(IPLfloat32, value->poissonRatio, (0.0f <= value->poissonRatio && value->poissonRatio < 0.5f + 1e-6f)); \
-            // Structural loss factor in [0, 1]
-            VALIDATE(IPLfloat32, value->lossFactor, (0.0f <= value->lossFactor && value->lossFactor <= 1.0f)); \
-            // Critical frequency in Hz (<= 0 to auto-compute; else positive and reasonable upper bound)
-            VALIDATE(IPLfloat32, value->criticalFrequency, (value->criticalFrequency <= 0.0f || (value->criticalFrequency > 0.0f && value->criticalFrequency < 1.0e6f))); \
-        } \
-    } \
-}
-
 
 // --------------------------------------------------------------------------------------------------------------------
 // CValidatedContext
@@ -1484,14 +1463,6 @@ public:
         VALIDATE_POINTER(scene);
 
         CStaticMesh::remove(scene);
-    }
-
-    // Extended MaterialEx setter/getter/clear validated entry points
-    virtual void setMaterialEx(IPLint32 materialIndex, const IPLMaterialEx* materialEx)
-    {
-        VALIDATE(IPLint32, materialIndex, (materialIndex >= 0 && materialIndex < numMaterials()));
-        VALIDATE_IPLMaterialEx(materialEx);
-        // Forward to base bridge through C API is handled in phonon_interfaces; no-op here.
     }
 };
 

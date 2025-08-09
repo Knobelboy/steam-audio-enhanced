@@ -181,9 +181,6 @@ namespace SteamAudio
         FrequencyDependent
     }
 
-    // Note: Native has an internal TransmissionMode (Legacy3Band, PhysicallyBased).
-    // We drive mode selection indirectly via project setting and material presence; no C# enum needed now.
-
     public enum ReflectionEffectType
     {
         Convolution,
@@ -420,17 +417,6 @@ namespace SteamAudio
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public struct MaterialEx
-    {
-        public float thickness;          // [m]
-        public float density;            // [kg/m^3]
-        public float youngsModulus;      // [Pa]
-        public float poissonRatio;       // [-]
-        public float lossFactor;         // [-]
-        public float criticalFrequency;  // [Hz] (<=0 to auto-compute)
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
     public struct InstancedMeshSettings
     {
         public IntPtr subScene;
@@ -615,8 +601,6 @@ namespace SteamAudio
     {
         public DirectEffectFlags flags;
         public TransmissionType transmissionType;
-        // If true, prefer physically based transmission when MaterialEx is present.
-        public Bool physicallyBasedTransmission;
         public float distanceAttenuation;
         public float airAbsorptionLow;
         public float airAbsorptionMid;
@@ -975,27 +959,6 @@ namespace SteamAudio
         [DllImport("phonon")]
 #endif
         public static extern void iplStaticMeshRemove(IntPtr staticMesh, IntPtr scene);
-
-#if (UNITY_IOS || UNITY_WEBGL) && !UNITY_EDITOR
-        [DllImport("__Internal")]
-#else
-        [DllImport("phonon")]
-#endif
-        public static extern void iplStaticMeshSetMaterialEx(IntPtr staticMesh, int materialIndex, ref MaterialEx materialEx);
-
-#if (UNITY_IOS || UNITY_WEBGL) && !UNITY_EDITOR
-        [DllImport("__Internal")]
-#else
-        [DllImport("phonon")]
-#endif
-        public static extern int iplStaticMeshGetMaterialEx(IntPtr staticMesh, int materialIndex, out MaterialEx materialExOut);
-
-#if (UNITY_IOS || UNITY_WEBGL) && !UNITY_EDITOR
-        [DllImport("__Internal")]
-#else
-        [DllImport("phonon")]
-#endif
-        public static extern void iplStaticMeshClearMaterialEx(IntPtr staticMesh, int materialIndex);
 
 #if (UNITY_IOS || UNITY_WEBGL) && !UNITY_EDITOR
         [DllImport("__Internal")]

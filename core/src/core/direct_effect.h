@@ -43,13 +43,6 @@ enum class TransmissionType
     FreqDependent
 };
 
-// Mode toggle for transmission processing
-enum class TransmissionMode
-{
-    Legacy3Band,
-    PhysicallyBased
-};
-
 struct DirectEffectSettings
 {
     int numChannels = 1;
@@ -60,7 +53,6 @@ struct DirectEffectParams
     DirectSoundPath directPath;
     DirectEffectFlags flags = static_cast<DirectEffectFlags>(0);
     TransmissionType transmissionType = TransmissionType::FreqDependent;
-    TransmissionMode transmissionMode = TransmissionMode::Legacy3Band;
 };
 
 // Audio effect that applies direct sound path parameters to an incoming multichannel audio buffer.
